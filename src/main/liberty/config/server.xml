@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="Refugio Animal Liberty Server">
+
+    <!-- Características de Jakarta EE 10 -->
+    <featureManager>
+        <feature>jakartaee-10.0</feature>
+    </featureManager>
+
+    <!-- Puertos HTTP y HTTPS -->
+    <httpEndpoint id="defaultHttpEndpoint"
+                  httpPort="9080"
+                  httpsPort="9443" />
+
+    <!-- Configuración del despliegue de la Aplicación -->
+    <webApplication id="refugio-animal"
+                    location="refugio-animal.war"
+                    contextRoot="/refugio-animal">
+    </webApplication>
+
+    <basicRegistry id="basic" realm="BasicRealm">
+        <user name="admin" password="password123"/>
+    </basicRegistry>
+
+</server>
