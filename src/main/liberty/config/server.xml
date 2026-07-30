@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="Refugio Animal Liberty Server">
+
+    <!-- Características de Jakarta EE 10 -->
+    <featureManager>
+        <feature>jakartaee-10.0</feature>
+    </featureManager>
+
+    <!-- Puertos HTTP y HTTPS -->
+    <httpEndpoint id="defaultHttpEndpoint"
+                  httpPort="9080"
+                  httpsPort="9443" />
+
+    <!-- Configuración del despliegue de la Aplicación -->
+    <webApplication id="refugio-animal"
+                    location="refugio-animal.war"
+                    contextRoot="/refugio-animal">
+    </webApplication>
+
+    <basicRegistry id="basic" realm="BasicRealm">
+        <user name="admin" password="password123"/>
+    </basicRegistry>
+
+    <!-- ===================================================================
+         CONEXIÓN A LA BASE DE DATOS (jdbc/refugioDS)
+         Esto faltaba por completo: persistence.xml pedía este JNDI name
+         pero nunca se definía aquí, así que la app nunca podía conectarse
+         a Postgres aunque el contenedor de la BD estuviera corriendo.
+
+         ${shared.resource.dir} es una variable propia de Liberty que apunta
+         siempre a "usr/shared/resources" del servidor que esté corriendo:
+           - En Docker: el Dockerfile copia el driver ahí dentro del contenedor.
+           - En "mvn liberty:dev" local: el propio pom.xml (copyDependencies del
+             liberty-maven-plugin) copia el driver ahí automáticamente.
+         Así no hay que tocar nada al cambiar de un entorno a otro.
+         =================================================================== -->
+    <library id="postgresJDBCLib">
+        <fileset dir="${shared.resource.dir}" includes="postgresql-*.jar"/>
+    </library>
+
+    <jdbcDriver id="postgresDriver" libraryRef="postgresJDBCLib"/>
+
+    <!-- Valores por defecto para correr localmente contra el Postgres de
+         docker-compose-dev-pg.yml (expuesto en localhost:5432). Si existen
+         variables de entorno DB_HOST/DB_PORT/etc. (como las que define
+         docker-compose para el contenedor de la app), esas tienen prioridad
+         y pisan estos valores por defecto. -->
+    <variable name="DB_HOST" defaultValue="localhost"/>
+    <variable name="DB_PORT" defaultValue="5432"/>
+    <variable name="DB_NAME" defaultValue="refugio_db"/>
+    <variable name="DB_USER" defaultValue="postgres"/>
+    <variable name="DB_PASSWORD" defaultValue="postgrespassword"/>
+
+    <dataSource id="refugioDS" jndiName="jdbc/refugioDS" jdbcDriverRef="postgresDriver">
+        <properties.postgresql
+            serverName="${DB_HOST}"
+            portNumber="${DB_PORT}"
+            databaseName="${DB_NAME}"
+            user="${DB_USER}"
+            password="${DB_PASSWORD}"/>
+    </dataSource>
+
+</server>

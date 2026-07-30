@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Reporte Mensual - Refugio Animal UNL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#16a34a',
+                        'primary-container': '#15803d',
+                        'on-primary': '#ffffff',
+                        'secondary-container': '#dcfce7',
+                        'on-secondary-container': '#166534',
+                        surface: '#f8fafc',
+                        'surface-bright': '#ffffff',
+                        'surface-container': '#f1f5f9',
+                        'on-surface': '#1e293b',
+                        'on-surface-variant': '#64748b',
+                        'outline-variant': '#e2e8f0',
+                        error: '#dc2626',
+                        'error-container': '#fef2f2',
+                        'on-error-container': '#991b1b'
+                    }
+                }
+            }
+        };
+    </script>
+</h:head>
+<h:body class="bg-surface min-h-screen flex flex-col">
+
+    <header class="w-full bg-surface-bright border-b border-outline-variant sticky top-0 z-50">
+        <div class="flex items-center justify-between px-6 h-16 max-w-7xl mx-auto">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-xl text-primary-container">Refugio Animal UNL</span>
+            </div>
+            <nav class="hidden md:flex items-center h-full gap-6">
+                <a class="h-full flex items-center text-gray-500 hover:text-primary-container font-semibold px-4" href="animals.xhtml">Animales</a>
+                <a class="h-full flex items-center text-gray-500 hover:text-primary-container font-semibold px-4" href="adoptions.xhtml">Adopciones</a>
+                <a class="h-full flex items-center text-primary-container font-bold border-b-2 border-primary-container px-4" href="report.xhtml">Reporte</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <span class="text-gray-500">Bienvenido, #{loginBean.loggedEmployee.loginUser}</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-7xl mx-auto px-6 py-8">
+        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-primary-container text-white px-4 py-3 font-semibold">
+                Reporte Mensual: Inventario
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="bg-gray-50 border-b border-gray-200">
+                        <th class="px-4 py-2 text-gray-500">ID</th>
+                        <th class="px-4 py-2 text-gray-500">Nombre</th>
+                        <th class="px-4 py-2 text-gray-500">Tipo</th>
+                        <th class="px-4 py-2 text-gray-500">Raza</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                    <ui:repeat value="#{reportBean.animals}" var="a">
+                        <tr>
+                            <td class="px-4 py-2">#{a.animalId}</td>
+                            <td class="px-4 py-2 font-medium">#{a.name}</td>
+                            <td class="px-4 py-2 text-gray-500">#{a.animalType}</td>
+                            <td class="px-4 py-2 text-gray-500">#{a.breed}</td>
+                        </tr>
+                    </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</h:body>
+</html>

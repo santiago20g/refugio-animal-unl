@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+                                 https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="refugioPU" transaction-type="JTA">
+        <jta-data-source>jdbc/refugioDS</jta-data-source>
+
+        <!-- LÍNEA AGREGADA: Obliga a JPA a escanear y encontrar todas tus clases @Entity automáticamente -->
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <properties>
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <!-- Carga los datos de prueba automáticamente al recrear el esquema.
+                 Antes este archivo existía pero nunca se referenciaba, así que nunca se ejecutaba. -->
+            <property name="jakarta.persistence.sql-load-script-source" value="db/initial-data.sql"/>
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.PostgreSQLPlatform"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+        </properties>
+    </persistence-unit>
+</persistence>
