@@ -1,0 +1,5 @@
+POSTGRES_DB=refugio_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgrespassword
+DB_HOST=postgres-db
+DB_PORT=5432
